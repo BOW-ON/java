@@ -11,11 +11,15 @@ public class EduClassExtends {
 class Mammal {
     String kinds;
     protected String name;
+    // final protected String name = "테스트"; // 상수 지정
 
     public Mammal() {
         this.kinds = "포유류";
+        // this.name = "ss"; // name을 상수로 지정했을 경우 변경 불가하므로 에러발생
     }
 
+    // final 메소드 : 자식 클래스에서 오버라이딩 불가능
+    // final public void printInfo() {
     public void printInfo() {
         System.out.println("Kinds: " + this.kinds);
     }
