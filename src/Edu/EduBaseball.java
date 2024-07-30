@@ -7,6 +7,26 @@ public class EduBaseball {
         // 원래 Math에 random 메소를 활용하여 랜덤 숫자를 얻을려고 했지만
         // 중복이 제거가 필요했기 때문에 0 ~ 9 까지 배열에 담고 섞은 뒤에 하나씩 뽑아오는 걸로 수정함
 
+        // 1자리 ~ 10자리까지 유저에게 입력 받아 야구게임 시작
+        System.out.println("** 야구게임 시작 **");
+        Scanner bsLong = new Scanner(System.in);
+        String bsLongRegex = "^[1-9]$|^10$"; // 숫자 자리수 입력
+        int numDigits;
+
+        while (true) {
+            System.out.println("야구게임 자리수를 정해주세요. (1~10 숫자만 입력)");
+            String bsLongInput = bsLong.nextLine();
+
+            // 정규 표현식 검사
+            if (!bsLongInput.matches(bsLongRegex)) {
+                System.out.printf("입력하신 값은 %s입니다. 1에서 10 사이의 숫자만 입력해주세요.\n", bsLongInput);
+                continue;
+            }
+
+            numDigits = Integer.parseInt(bsLongInput);
+            break;
+        }
+
         // 0부터 9까지의 숫자를 리스트에 담기
         List<Integer> nums = new ArrayList<Integer>();
         for (int i = 0; i < 10; i++) {
@@ -22,7 +42,7 @@ public class EduBaseball {
 
         // 뽑은 숫자 4개를 배열에 담아 두기
         List<Integer> bsNum = new ArrayList<Integer>();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < numDigits; i++) {
             bsNum.add(nums.get(i));
 
         }
@@ -34,24 +54,24 @@ public class EduBaseball {
         // System.out.println(bsNum);
 
         // 입력 값 받기
-        System.out.println("** 야구게임 시작 **");
-        System.out.println("4자리 숫자를 작성하면 아래와 같이 판별합니다. (중복 숫자 없음)");
+        System.out.println(numDigits + "자리 숫자를 작성하면 아래와 같이 판별합니다. (중복 숫자 없음)");
         System.out.println(" - 자리와 숫자가 모두 같은 경우 : S");
         System.out.println(" - 숫자만 같은 경우 : B");
         System.out.println(" - 자리와 숫자 모두 다른 경우 : O");
+        System.out.println(" - 예시) 결과: 1S 2B 2O");
 
         Scanner bsSc = new Scanner(System.in);
         String input;
-        String regex = "^[0-9]{4}$"; // 4자리 숫자에 대한 정규 표현식
+        String regex = "^[0-9]{" + numDigits + "}$"; // 4자리 숫자에 대한 정규 표현식
 
         // 입력 값 판별
         while (true) {
-            System.out.println("아래 4자리 숫자를 입력해주세요.");
+            System.out.println("아래 "+ numDigits +"자리 숫자를 입력해주세요.");
             input = bsSc.nextLine();
 
             // 정규 표현식 검사
             if (!input.matches(regex)) {
-                System.out.printf("입력하신 값은 %s입니다. 4자리 숫자만 입력해주세요.\n", input);
+                System.out.printf("입력하신 값은 %s입니다. "+ numDigits +"자리 숫자만 입력해주세요.\n", input);
                 continue;
             }
 
@@ -65,8 +85,10 @@ public class EduBaseball {
             int sCount = 0;
             int bCount = 0;
 
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < numDigits; i++) {
+                // 입력 받은 수 한자리씩 추출하기
                 int digit = Character.getNumericValue(input.charAt(i));
+                // 랜덤으로 생성된 수와 입력받은 수 비교
                 if (bsNum.contains(digit)) {
                     if (bsNum.get(i) == digit) {
                         sCount++; // 자리와 숫자가 모두 같은 경우
@@ -75,14 +97,13 @@ public class EduBaseball {
                     }
                 }
             }
-
-            int oCount = 4 - sCount - bCount; // 자리와 숫자가 모두 다른 경우
+            int oCount = numDigits - sCount - bCount; // 자리와 숫자가 모두 다른 경우
 
             // 결과 출력
             System.out.println("결과: " + sCount + "S " + bCount + "B " + oCount + "O");
 
             // 4S가 나오면 게임 종료
-            if (sCount == 4) {
+            if (sCount == numDigits) {
                 System.out.println("축하합니다! 모든 숫자를 맞췄습니다.");
                 break;
             }
